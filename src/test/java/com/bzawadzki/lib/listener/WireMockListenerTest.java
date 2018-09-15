@@ -15,7 +15,16 @@ public class WireMockListenerTest {
   @Test
   public void testWithWireMockListener() {
     stubFor(get(anyUrl()).willReturn(aResponse().withStatus(200)));
-    given().port(8989).basePath("/any")
+    given().port(8081).basePath("/any")
+            .when().get()
+            .then().statusCode(200);
+  }
+
+  @WireMockTest(port = 8089)
+  @Test
+  public void testWithWireMockListenerAndPort() {
+    stubFor(get(anyUrl()).willReturn(aResponse().withStatus(200)));
+    given().port(8089).basePath("/any")
             .when().get()
             .then().statusCode(200);
   }

@@ -11,5 +11,6 @@ public @interface WireMockTest {
 
   int port() default 8081;
   boolean cleanStubs() default true;
+  boolean restart() default true;
   boolean useTempFolders() default true;
 }

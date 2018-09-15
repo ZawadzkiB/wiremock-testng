@@ -64,13 +64,9 @@ public class WireMockListener implements IInvokedMethodListener {
         return wireMockAnnotation;
     }
 
-    private void setupServerWithTempFileRoot() {
-        setupServer(wireMockConfig().withRootDirectory(setupTempFileRoot().getAbsolutePath()));
-    }
-
     private static File setupTempFileRoot() {
         try {
-            File root = Files.createTempDirectory("tempWiremock").toFile();
+            File root = Files.createTempDirectory("tempWireMock").toFile();
             new File(root, MAPPINGS_ROOT).mkdirs();
             new File(root, FILES_ROOT).mkdirs();
             return root;
@@ -79,24 +75,27 @@ public class WireMockListener implements IInvokedMethodListener {
         }
     }
 
-    private void setupServer(WireMockConfiguration options) {
-        options.port(8989);
-
-        wireMockServer = new WireMockServer(options);
-        wireMockServer.start();
-        WireMock.configureFor(wireMockServer.port());
-    }
-
     private void startServer(WireMockTest wireMockTest){
+        WireMockConfiguration options = new WireMockConfiguration();
         if(wireMockTest.useTempFolders()){
-            setupServerWithTempFileRoot();
+            options = wireMockConfig().withRootDirectory(setupTempFileRoot().getAbsolutePath());
         }
+        options.port(wireMockTest.port());
+        if(Objects.isNull(wireMockServer) || wireMockTest.restart()){
+            wireMockServer = new WireMockServer(options);
+        }
+        if(!wireMockServer.isRunning()){
+            wireMockServer.start();
+        }
+        WireMock.configureFor(wireMockServer.port());
     }
 
     private void stopServer(WireMockTest wireMockTest){
         if(wireMockTest.cleanStubs()){
             wireMockServer.getStubMappings().forEach(sm -> wireMockServer.removeStub(sm));
         }
-        wireMockServer.stop();
+        if(wireMockTest.restart()){
+            wireMockServer.stop();
+        }
     }
 }
