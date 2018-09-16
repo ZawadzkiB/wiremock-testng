@@ -6,10 +6,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target({ElementType.TYPE})
 public @interface WireMockTest {
 
-  int port() default 8081;
+  int port() default 8181;
   boolean cleanStubs() default true;
   boolean restart() default true;
   boolean useTempFolders() default true;

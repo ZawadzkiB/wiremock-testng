@@ -9,23 +9,23 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static io.restassured.RestAssured.given;
 
+@WireMockTest(cleanStubs = false, restart = false)
 @Listeners(WireMockListener.class)
 public class WireMockListenerKeepStubsTest {
 
-  @WireMockTest(cleanStubs = false, restart = false)
-  @Test
+  @Test(groups = {"keepStubs"})
   public void testWithWireMockListenerOnSpecificPath() {
     stubFor(get("/stub1").willReturn(aResponse().withStatus(201)));
-    given().port(8081).basePath("/stub1")
+    given().port(8181).basePath("/stub1")
             .when().get()
             .then().statusCode(201);
   }
 
-  @WireMockTest()
-  @Test(dependsOnMethods = "testWithWireMockListenerOnSpecificPath")
+  @Test(groups = {"keepStubs"}, dependsOnMethods = "testWithWireMockListenerOnSpecificPath")
   public void testWithWireMockListenerOnSpecificPathWithStubFromPreviousMethod() {
-    given().port(8081).basePath("/stub1")
+    given().port(8181).basePath("/stub1")
             .when().get()
             .then().statusCode(201);
   }
+
 }

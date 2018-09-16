@@ -1,17 +1,22 @@
 package com.bzawadzki.lib.listener;
 
 import com.bzawadzki.lib.annotation.WireMockTest;
-import org.apache.http.conn.HttpHostConnectException;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static io.restassured.RestAssured.given;
 
+@WireMockTest(port = 8081)
 @Listeners(WireMockListener.class)
-public class WireMockListenerTest {
+public class WireMockListenerDifferentPortTest {
 
-  @WireMockTest
+  @BeforeClass
+  public void setUpStubs(){
+    stubFor(get(urlEqualTo("/any")).willReturn(aResponse().withStatus(200)));
+  }
+
   @Test
   public void testWithWireMockListener() {
     stubFor(get(anyUrl()).willReturn(aResponse().withStatus(200)));
@@ -20,20 +25,12 @@ public class WireMockListenerTest {
             .then().statusCode(200);
   }
 
-  @WireMockTest(port = 8089)
   @Test
-  public void testWithWireMockListenerAndPort() {
+  public void testWithWireMockListenerAgain() {
     stubFor(get(anyUrl()).willReturn(aResponse().withStatus(200)));
-    given().port(8089).basePath("/any")
+    given().port(8081).basePath("/any")
             .when().get()
             .then().statusCode(200);
-  }
-
-  @Test(expectedExceptions = HttpHostConnectException.class)
-  public void testWithOutWireMockListener() {
-    stubFor(get(anyUrl()).willReturn(aResponse().withStatus(200)));
-    given().port(8989).basePath("/any")
-            .when().get();
   }
 
 }
