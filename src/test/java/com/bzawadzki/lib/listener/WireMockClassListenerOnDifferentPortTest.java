@@ -1,6 +1,6 @@
 package com.bzawadzki.lib.listener;
 
-import com.bzawadzki.lib.annotation.WireMockTest;
+import com.bzawadzki.lib.annotations.WireMockConfig;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -8,9 +8,9 @@ import org.testng.annotations.Test;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static io.restassured.RestAssured.given;
 
-@WireMockTest(port = 8081)
-@Listeners(WireMockListener.class)
-public class WireMockListenerDifferentPortTest {
+@WireMockConfig(port = 8081)
+@Listeners(WireMockClassListener.class)
+public class WireMockClassListenerOnDifferentPortTest {
 
   @BeforeClass
   public void setUpStubs(){
