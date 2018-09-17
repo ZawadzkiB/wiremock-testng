@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="classListener" configfailurepolicy="continue">
+    <test verbose="1" name="classListener" enabled="true" preserve-order="true" thread-count="1">
+        <classes>
+            <class name="com.bzawadzki.lib.listener.WireMockClassListenerOnDifferentPortTest"/>
+            <class name="com.bzawadzki.lib.listener.WireMockClassListenerTest"/>
+        </classes>
+    </test>
+</suite>

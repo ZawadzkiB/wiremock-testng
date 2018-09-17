@@ -19,8 +19,8 @@ public class WireMockInstance {
 
   private static WireMockInstance instance;
   private static WireMockServer wireMockServer;
-  private boolean useTempFolders = true;
-  public int port = 8181;
+  private boolean useTempFolders;
+  private int port;
 
   private WireMockInstance() { }
 
@@ -31,27 +31,28 @@ public class WireMockInstance {
     return instance;
   }
 
-  public void startServer(WireMockConfig wireMockConfig) {
+  public void startServerDefault(WireMockConfig wireMockConfig) {
     this.port = wireMockConfig.port();
     this.useTempFolders = wireMockConfig.useTempFolder();
-    WireMockConfiguration options = getWireMockConfiguration();
-    startServer(options);
+    startServer();
   }
 
-  public void startServer(){
-    startServer(getWireMockConfiguration());
+  public void startServerDefault(){
+    this.port = 8181;
+    this.useTempFolders = true;
+    startServer();
   }
 
-  public void startServer(WireMockConfiguration options) {
+  private void startServer() {
     if (Objects.isNull(wireMockServer)) {
-      wireMockServer = new WireMockServer(options);
+      wireMockServer = new WireMockServer(getWireMockConfiguration());
     }
     if (!wireMockServer.isRunning()) {
       wireMockServer.start();
     }
     if(wireMockServer.port()!= this.port){
       wireMockServer.stop();
-      wireMockServer = new WireMockServer(options);
+      wireMockServer = new WireMockServer(getWireMockConfiguration());
       wireMockServer.start();
     }
     WireMock.configureFor(wireMockServer.port());

@@ -13,9 +13,9 @@ public class WireMockClassListener implements IClassListener {
   public void onBeforeClass(ITestClass iTestClass) {
     WireMockConfig[] wireMockConfig = iTestClass.getRealClass().getDeclaredAnnotationsByType(WireMockConfig.class);
     if (ArrayUtils.isNotEmpty(wireMockConfig)) {
-      WireMockInstance.getInstance().startServer(wireMockConfig[0]);
+      WireMockInstance.getInstance().startServerDefault(wireMockConfig[0]);
     } else {
-      WireMockInstance.getInstance().startServer();
+      WireMockInstance.getInstance().startServerDefault();
     }
   }
 

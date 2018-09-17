@@ -13,9 +13,9 @@ public class WireMockMethodListener implements IInvokedMethodListener {
       WireMockConfig[] wireMockConfig = iInvokedMethod.getTestMethod()
               .getConstructorOrMethod().getMethod().getDeclaredAnnotationsByType(WireMockConfig.class);
       if (ArrayUtils.isNotEmpty(wireMockConfig)) {
-        WireMockInstance.getInstance().startServer(wireMockConfig[0]);
+        WireMockInstance.getInstance().startServerDefault(wireMockConfig[0]);
       } else {
-        WireMockInstance.getInstance().startServer();
+        WireMockInstance.getInstance().startServerDefault();
       }
     }
   }

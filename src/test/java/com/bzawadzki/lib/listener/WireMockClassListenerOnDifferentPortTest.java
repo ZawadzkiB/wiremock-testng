@@ -17,6 +17,7 @@ public class WireMockClassListenerOnDifferentPortTest {
     stubFor(get(urlEqualTo("/any")).willReturn(aResponse().withStatus(200)));
   }
 
+  @WireMockConfig(port = 8081)
   @Test
   public void testWithWireMockListener() {
     stubFor(get(anyUrl()).willReturn(aResponse().withStatus(200)));
@@ -25,6 +26,7 @@ public class WireMockClassListenerOnDifferentPortTest {
             .then().statusCode(200);
   }
 
+  @WireMockConfig(port = 8081)
   @Test
   public void testWithWireMockListenerAgain() {
     stubFor(get(anyUrl()).willReturn(aResponse().withStatus(200)));

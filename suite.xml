@@ -1,0 +1,7 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="classListener" configfailurepolicy="continue">
+    <suite-files>
+        <suite-file path="suite/suiteForClassListener.xml"/>
+        <suite-file path="suite/suiteForMethodListener.xml"/>
+    </suite-files>
+</suite>
